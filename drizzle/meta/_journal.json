@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788266448060,
+      "tag": "0000_optimal_clea",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788946697290,
+      "tag": "0001_certain_reaper",
+      "breakpoints": true
+    }
+  ]
+}
