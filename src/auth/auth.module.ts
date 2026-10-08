@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { UsersModule } from '../users/users.module.js';
-import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
-import { AccessTokenGuard } from './guards/access-token.guard.js';
-import { GoogleAuthService } from './google-auth.service.js';
-import { GithubAuthService } from './github-auth.service.js';
-import { MailService } from './mail.service.js';
+import { AuthController } from './auth.controller.js';
+import { UsersModule } from '../users/users.module.js';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [UsersModule, JwtModule.register({})],
+  imports: [
+    UsersModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET || 'fallback_secret',
+      signOptions: { expiresIn: '1d' },
+    }),
+  ],
+  providers: [AuthService],
   controllers: [AuthController],
-  providers: [AuthService, AccessTokenGuard, GoogleAuthService, GithubAuthService, MailService],
+  exports: [AuthService],
 })
 export class AuthModule {}

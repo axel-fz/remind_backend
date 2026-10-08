@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from './database/database.module.js';
-import { UsersModule } from './users/users.module.js';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
+import { RemindersModule } from './reminders/reminders.module.js';
 import { AuthModule } from './auth/auth.module.js';
+import { UsersModule } from './users/users.module.js';
 
 @Module({
   imports: [
@@ -12,11 +12,17 @@ import { AuthModule } from './auth/auth.module.js';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    DatabaseModule,
-    UsersModule,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_URI'),
+      }),
+      inject: [ConfigService],
+    }),
+    ScheduleModule.forRoot(),
+    RemindersModule,
     AuthModule,
+    UsersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
