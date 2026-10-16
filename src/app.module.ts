@@ -5,8 +5,10 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { RemindersModule } from './reminders/reminders.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { UsersModule } from './users/users.module.js';
+import { AppController } from './app.controller.js';
 
 @Module({
+  controllers: [AppController],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
